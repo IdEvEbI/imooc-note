@@ -1,4 +1,4 @@
-# React+React Hook+Egg 造轮子 全栈开发旅游电商应用
+# React+Egg 全栈开发旅游电商应用
 
 ## 课程信息
 
