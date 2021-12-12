@@ -156,13 +156,14 @@ console.log(tuple[0].split('').join('-'), tuple[1].toFixed(2))
 枚举类型 `enum` 是对 JavaScript 标准数据类型的一个补充，像 C++、Java 等其他语言一样，使用枚举类型可以为一组数值赋予更友好的名字，增强代码的可读性，避免在开发时使用魔法数字。
 
 ```ts
+// 枚举
 // 默认情况下，枚举类型从 `0` 开始为元素编号
 enum Color { Red, Green, Blue }
 let color: Color = Color.Red
 console.log(color) // 0
 ```
 
-默认情况下，枚举类型从 `0` 开始为元素编号，上述代码编译成 JavaScript 之后的代码如下：
+默认情况下，枚举类型从 `0` 开始为元素编号，上述代码编译成 JavaScript 之后如下：
 
 ```js
 var Color;
@@ -180,4 +181,66 @@ console.log(color);
 ```ts
 enum Gender { Male = 1, Female = 2, Other = 4 }
 console.log(Gender[2], typeof Gender[2]) // 'Female' 'string'
+```
+
+### 7. any
+
+`any` 表示任意，也就是**不确定变量保存数据的类型**，在使用 TypeScript 做新开发时，建议尽量不要使用 `any` 类型，因为**类型检测**本身就是 TypeScript 的一大优势。
+
+但是，如果如果数据是来自**用户输入**或**第三方代码库**，亦或者是**对现有代码改写升级**，`any` 类型就非常有用了。
+
+提示：在 TypeScript 中如果所有的类型都使用 `any` 那基本等同于用 JavaScript 开发了。
+
+```ts
+// any
+let notSure: any = 4
+notSure = '这是一个字符串'
+notSure = false
+console.log(notSure)
+```
+
+### 8. void
+
+`void` 表示没有任何类型，当一个函数没有返回值时，可以将其返回值类型设置为：`void`。
+
+```ts
+// void
+function sayHi(userName: string): void {
+  console.log(`欢迎 ${userName} 开始学习 TypeScript。`)
+}
+sayHi('IdevebI')
+```
+
+> 提示：在开发中不会给变量类型声明为 `void`，因为这样只能使用 `undefined` 为该变量赋值。
+
+### 9. null 和 undefined
+
+与 JavaScript 一致，`null` 表示空，`undefined` 表示未定义。
+
+如果把 `tsconfig.json` 中的严格模式关闭 `"strict": false,`，可以把 `null` 和 `undefined` 赋值给其他类型的变量，但是在实际开发中不推荐。
+
+```ts
+// null & undefined
+let u: undefined = undefined
+let n: null = null
+console.log(u == n) // true
+console.log(u === n) // false
+```
+
+### 10. never
+
+`never` 表示的是永不存在值的类型，应用场景包括：
+
+1. 总是会抛出异常的函数；
+2. 无限循环的函数，例如事件循环。
+
+```ts
+function myError(message: string): never {
+  throw new Error(message)
+}
+
+function infiniteLoop(): never {
+  while (true) {
+  }
+}
 ```

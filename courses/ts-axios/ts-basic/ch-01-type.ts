@@ -32,3 +32,31 @@ console.log(color) // 0
 enum Gender { Male = 1, Female = 2, Other = 4 }
 // 通过枚举的数值可以得到对应的名称字符串
 console.log(Gender[2], typeof Gender[2]) // 'Female' 'string'
+
+// 7. any
+let notSure: any = 4
+notSure = '这是一个字符串'
+notSure = false
+console.log(notSure)
+
+// 8. void
+function sayHi(userName: string): void {
+  console.log(`欢迎 ${userName} 开始学习 TypeScript。`)
+}
+sayHi('IdevebI')
+
+// 9. null & undefined
+let u: undefined = undefined
+let n: null = null
+console.log(u == n) // true
+console.log(u === n) // false
+
+// 10. never
+function myError(message: string): never {
+  throw new Error(message)
+}
+
+function infiniteLoop(): never {
+  while (true) {
+  }
+}
