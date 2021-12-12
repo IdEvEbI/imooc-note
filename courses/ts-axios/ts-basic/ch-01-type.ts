@@ -60,3 +60,15 @@ function infiniteLoop(): never {
   while (true) {
   }
 }
+
+// 11. object
+function createObj(obj: object): object {
+  return obj
+}
+createObj({ name: 'IdevebI', age: 18 })
+
+// 12. 类型断言
+let someValue: any = '我是一个没有类型的字符串'
+
+console.log((<string>someValue).length)
+console.log((someValue as string).length)

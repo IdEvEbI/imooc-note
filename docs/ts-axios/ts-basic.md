@@ -244,3 +244,29 @@ function infiniteLoop(): never {
   }
 }
 ```
+
+### 11. object
+
+`object` 表示非原始类型，也就是除 `number`，`string`，`boolean`，`symbol`，`null` 或 `undefined` 之外的类型。
+
+```ts
+// object
+function createObj(obj: object): object {
+  return obj
+}
+createObj({ name: 'IdevebI', age: 18 })
+```
+
+### 12. 类型断言
+
+**类型断言**类似于其他语言中的类型转换，但不进行特殊的数据检查和解构，对运行时没有影响，只是在编译阶段起作用。
+
+TypeScript 提供了两种方式的**类型断言**，在开发中推荐使用第一种 `as`，其语义是：**该变量 是一个（as a）string 类型**。
+
+```ts
+// 类型断言
+let someValue: any = '我是一个没有类型的字符串'
+
+console.log((someValue as string).length)
+console.log((<string>someValue).length)
+```
