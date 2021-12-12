@@ -17,7 +17,7 @@ npx tsc -v
 
 ## 2. 快速体验
 
-> 目标：了解 TypeScript 的**编译运行过程**，对 TypeScript **类型注解**的作用有一个基本认识。
+> 目标：了解 TypeScript 的**编译运行过程**，初步体会 TypeScript **类型注解**的作用。
 
 ### 2.1 编译及运行
 
@@ -65,16 +65,46 @@ console.log(sayHello(user))
 
 ### 2.3 tsconfig.json
 
-1. 在终端输入以下命令，创建 `tsconfig.json`：
+1. 在终端输入以下命令，可以创建 `tsconfig.json`：
 
    ```bash
    npx tsc --init
    ```
 
-2. 修改 `tsconfig.json` 打开以下两个选项：
-   1. `"outDir": "./js"` 会将编译结果输出到 `./js` 目录下；
-   2. `"removeComments": true` 编译过程中会删除代码中的注释。
+2. 修改 `tsconfig.json` 打开以下一个选项，修改编译结果的输出目录：
 
-3. 注意点
+   1. `"outDir": "./js"` 会将编译结果输出到 `./js` 目录下。
+
+3. 注意点：
+
    1. 创建了 `tsconfig.json` 之后，可以使用 `npx tsc` 一次性编译当前目录下的所有 ts 文件；
    2. 如果使用 `npx tsc xx.js` 会对 `xx.js` 单独编译，但是不会应用 `tsconfig.json` 的配置内容。
+
+## 3. 基础类型
+
+TypeScript 支持与 JavaScript 几乎相同的数据类型，此外还提供了一些实用的数据类型方便开发中使用，例如：**枚举类型**。
+
+### 3.1 布尔值
+
+TypeScript 中**布尔值**的类型是 `number`，用来保存 `true` 或者 `false`。
+
+```ts
+// 布尔类型
+let isDone: boolean = true
+```
+
+### 3.2 数字
+
+TypeScript 中**数字**的类型是 `number`，是 64 位的双精度浮点数，这与 JavaScript 一致。
+
+除了支持十进制和十六进制字面量，TypeScript 还支持 ECMAScript 2015中引入的二进制和八进制字面量。
+
+```ts
+// 数字类型
+let decLiteral: number = 20
+let hexLiteral: number = 0x14
+let binaryLiteral: number = 0b10100
+let octalLiteral: number = 0o24
+```
+
+> 扩展阅读：[关于 Javascript 的 Number 类型，你需要知道的东西](https://genuifx.github.io/2018/04/17/here-is-what-you-need-to-know-about-javasciprt-number-type/)
