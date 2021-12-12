@@ -10,8 +10,8 @@
 - 课程目标：TypeScript 从零实现 axios
 - TypeScript
   - 是 JavaScript 的增强
-    - 为 JavaScript 添加了可选择的类型标注，大大增强了代码的可读性和可维护性；
-    - 提供最新和不断发展的 JavaScript 特性，能让我们建立更健壮的组件。
+    - 为 JavaScript 添加了可选择的类型标注，大大增强了代码的可读性和可维护性
+    - 提供最新和不断发展的 JavaScript 特性，能让我们建立更健壮的组件
   - 是未来前端发展趋势
   - 是技术转型趋势
   - 有助于提升个人能力和竞争力
@@ -37,3 +37,5 @@
   - 使用 TypeScript 编写完整的单元测试
 
 ## 课程笔记
+
+1. [TypeScript 基础](./ts-basic.md)
