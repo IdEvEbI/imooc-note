@@ -124,7 +124,7 @@ let welcome: string = `欢迎 ${userName}，今年 ${age}，年少有为啊~~~`
 console.log(welcome)
 ```
 
-### 4. 数组（Array）
+### 3.4 数组（Array）
 
 TypeScript 中**数组**同样可以保存一组数据，这与 JavaScript 一致。
 
@@ -138,7 +138,7 @@ let list1: number[] = [1, 2, 3]
 let list2: Array<number> = [1, 2, 3]
 ```
 
-### 5. 元组（Tuple）
+### 3.5 元组（Tuple）
 
 TypeScript 中**元组类型**允许表示**一个已知元素数量和类型的数组**，各元素的类型不必相同，JavaScript 中只有数组的概念，并且对数组元素的类型没有限制。
 
@@ -151,7 +151,7 @@ let tuple: [string, number] = ['hello', 16]
 console.log(tuple[0].split('').join('-'), tuple[1].toFixed(2))
 ```
 
-### 6. 枚举（enum）
+### 3.6 枚举（enum）
 
 枚举类型 `enum` 是对 JavaScript 标准数据类型的一个补充，像 C++、Java 等其他语言一样，使用枚举类型可以为一组数值赋予更友好的名字，增强代码的可读性，避免在开发时使用魔法数字。
 
@@ -183,7 +183,7 @@ enum Gender { Male = 1, Female = 2, Other = 4 }
 console.log(Gender[2], typeof Gender[2]) // 'Female' 'string'
 ```
 
-### 7. any
+### 3.7 any
 
 `any` 表示任意，也就是**不确定变量保存数据的类型**，在使用 TypeScript 做新开发时，建议尽量不要使用 `any` 类型，因为**类型检测**本身就是 TypeScript 的一大优势。
 
@@ -199,7 +199,7 @@ notSure = false
 console.log(notSure)
 ```
 
-### 8. void
+### 3.8 void
 
 `void` 表示没有任何类型，当一个函数没有返回值时，可以将其返回值类型设置为：`void`。
 
@@ -213,7 +213,7 @@ sayHi('IdevebI')
 
 > 提示：在开发中不会给变量类型声明为 `void`，因为这样只能使用 `undefined` 为该变量赋值。
 
-### 9. null 和 undefined
+### 3.9 null 和 undefined
 
 与 JavaScript 一致，`null` 表示空，`undefined` 表示未定义。
 
@@ -227,7 +227,7 @@ console.log(u == n) // true
 console.log(u === n) // false
 ```
 
-### 10. never
+### 3.10 never
 
 `never` 表示的是永不存在值的类型，应用场景包括：
 
@@ -245,9 +245,9 @@ function infiniteLoop(): never {
 }
 ```
 
-### 11. object
+### 3.11 object
 
-`object` 表示非原始类型，也就是除 `number`，`string`，`boolean`，`symbol`，`null` 或 `undefined` 之外的类型。
+`object` 表示非原始类型，也就是除 `number`、`string`、`boolean`、`symbol`、`null` 或 `undefined` 之外的类型。
 
 ```ts
 // object
@@ -257,7 +257,7 @@ function createObj(obj: object): object {
 createObj({ name: 'IdevebI', age: 18 })
 ```
 
-### 12. 类型断言
+### 3.12 类型断言
 
 **类型断言**类似于其他语言中的类型转换，但不进行特殊的数据检查和解构，对运行时没有影响，只是在编译阶段起作用。
 
@@ -270,3 +270,5 @@ let someValue: any = '我是一个没有类型的字符串'
 console.log((someValue as string).length)
 console.log((<string>someValue).length)
 ```
+
+## 4. 变量声明
