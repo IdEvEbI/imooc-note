@@ -146,8 +146,38 @@ TypeScript 中**元组类型**允许表示**一个已知元素数量和类型的
 
 ```ts
 // 元组
-let tuple: [string, number]
-tuple = ['hello', 16]
+let tuple: [string, number] = ['hello', 16]
 
 console.log(tuple[0].split('').join('-'), tuple[1].toFixed(2))
+```
+
+### 6. 枚举（enum）
+
+枚举类型 `enum` 是对 JavaScript 标准数据类型的一个补充，像 C++、Java 等其他语言一样，使用枚举类型可以为一组数值赋予更友好的名字，增强代码的可读性，避免在开发时使用魔法数字。
+
+```ts
+// 默认情况下，枚举类型从 `0` 开始为元素编号
+enum Color { Red, Green, Blue }
+let color: Color = Color.Red
+console.log(color) // 0
+```
+
+默认情况下，枚举类型从 `0` 开始为元素编号，上述代码编译成 JavaScript 之后的代码如下：
+
+```js
+var Color;
+(function (Color) {
+    Color[Color["Red"] = 0] = "Red";
+    Color[Color["Green"] = 1] = "Green";
+    Color[Color["Blue"] = 2] = "Blue";
+})(Color || (Color = {}));
+let color = Color.Red;
+console.log(color);
+```
+
+在开发时，可以手动指定枚举类型中任意成员的数值，同时还可以通过枚举的数值可以得到对应的名称字符串，代码如下：
+
+```ts
+enum Gender { Male = 1, Female = 2, Other = 4 }
+console.log(Gender[2], typeof Gender[2]) // 'Female' 'string'
 ```

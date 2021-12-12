@@ -18,7 +18,17 @@ let list1: number[] = [1, 2, 3]
 let list2: Array<number> = [1, 2, 3]
 
 // 5. 元组
-let tuple: [string, number]
-tuple = ['hello', 16]
+let tuple: [string, number] = ['hello', 16]
 
 console.log(tuple[0].split('').join('-'), tuple[1].toFixed(2))
+
+// 6. 枚举
+// 默认情况下，枚举类型从 `0` 开始为元素编号
+enum Color { Red, Green, Blue }
+let color: Color = Color.Red
+console.log(color) // 0
+
+// 手动指定枚举类型中任意成员的数值
+enum Gender { Male = 1, Female = 2, Other = 4 }
+// 通过枚举的数值可以得到对应的名称字符串
+console.log(Gender[2], typeof Gender[2]) // 'Female' 'string'
