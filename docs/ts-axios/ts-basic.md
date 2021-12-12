@@ -82,18 +82,18 @@ console.log(sayHello(user))
 
 ## 3. 基础类型
 
-TypeScript 支持与 JavaScript 几乎相同的数据类型，此外还提供了一些实用的数据类型方便开发中使用，例如：**枚举类型**。
+TypeScript 支持与 JavaScript 几乎相同的数据类型，此外还提供了一些实用的数据类型方便开发中使用，例如：**枚举**。
 
-### 3.1 布尔值
+### 3.1 布尔值（boolean）
 
-TypeScript 中**布尔值**的类型是 `number`，用来保存 `true` 或者 `false`。
+TypeScript 中**布尔值**的类型是 `number`，用来保存 `true` 或者 `false`，这与 JavaScript 一致。
 
 ```ts
 // 布尔类型
 let isDone: boolean = true
 ```
 
-### 3.2 数字
+### 3.2 数字（number）
 
 TypeScript 中**数字**的类型是 `number`，是 64 位的双精度浮点数，这与 JavaScript 一致。
 
@@ -107,4 +107,47 @@ let binaryLiteral: number = 0b10100
 let octalLiteral: number = 0o24
 ```
 
-> 扩展阅读：[关于 Javascript 的 Number 类型，你需要知道的东西](https://genuifx.github.io/2018/04/17/here-is-what-you-need-to-know-about-javasciprt-number-type/)
+> 扩展阅读：[关于 Javascript 的 Number 类型，你需要知道的东西](https://genuifx.github.io/2018/04/17/here-is-what-you-need-to-know-about-javasciprt-number-type/)。
+
+### 3.3 字符串（string）
+
+TypeScript 中**字符串**的类型是 `string`，这与 JavaScript 一致。
+
+- **普通字符串**使用双引号（`"`）或单引号（`'`）包裹，开发中习惯使用单引号；
+- **模板字符串**使用反引号包裹（ `\``）。
+
+```ts
+// 字符串
+let userName: string = 'IdevebI'
+let age: number = 18
+let welcome: string = `欢迎 ${userName}，今年 ${age}，年少有为啊~~~`
+console.log(welcome)
+```
+
+### 4. 数组（Array）
+
+TypeScript 中**数组**同样可以保存一组数据，这与 JavaScript 一致。
+
+不过，在 TypeScript 中定义数组时需要**指定保存在数组中数据的数据类型**，在开发中不允许向数组中添加其他类型的数据。
+
+TypeScript 中定义数组有两种方式，推荐使用第一种，代码如下：
+
+```ts
+// 数组
+let list1: number[] = [1, 2, 3]
+let list2: Array<number> = [1, 2, 3]
+```
+
+### 5. 元组（Tuple）
+
+TypeScript 中**元组类型**允许表示**一个已知元素数量和类型的数组**，各元素的类型不必相同，JavaScript 中只有数组的概念，并且对数组元素的类型没有限制。
+
+与 JavaScript 相同，可以通过**下标**访问元组元素，不过由于在定义元组时，已经指定了每个元素的类型，所以在开发时，智能提示要强大很多。
+
+```ts
+// 元组
+let tuple: [string, number]
+tuple = ['hello', 16]
+
+console.log(tuple[0].split('').join('-'), tuple[1].toFixed(2))
+```
