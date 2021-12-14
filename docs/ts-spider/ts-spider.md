@@ -38,7 +38,11 @@
 
 6. 运行 `yarn dev` 可以看到控制台输出 `Hello spider`。
 
-## 2. 抓取网页内容
+## 2. 爬虫基本功能实现
+
+> 目标：通过 `Spider` 类实现网页抓取，解析数据并保存到数据文件。
+
+### 2.1 抓取网页内容
 
 > 目标：新建 `Spider` 类，在构造方法中直接**抓取课程测试的网页内容**。
 
@@ -113,7 +117,7 @@
 
 7. 运行 `yarn dev` 确保程序能够正常执行。
 
-## 3. 课程数据提取
+### 2.2 课程数据提取
 
 > 目标：使用 `cheerio` 从网页中提取**课程数据**。
 
@@ -202,3 +206,62 @@
    ```
 
 6. 运行 `yarn dev` 确保**课程名称**和**学习数量**能够被正确提取并返回。
+
+### 2.3 文件结构定义和存储
+
+> 目标：重新定义数据结构，将**课程数据**保存到文件。
+
+1. 引入 `fs` 和 `path`，用于文件读写：
+
+   ```ts
+   import fs from 'fs'
+   import path from 'path'
+   ```
+
+2. 定义**JSON 内容结构**的接口：
+
+   ```ts
+   /**
+    * JSON 内容结构
+    */
+   interface JSONContent {
+     [time: number]: Course[]
+   }
+   ```
+
+3. 编写 `generateJSONContent` 方法，用于讲课程信息保存到文件：
+
+   ```ts
+   /**
+    * 生成 JSON 课程内容并保存到文件
+    * @param courseInfo 课程信息
+    */
+   generateJSONContent(courseInfo: CourseInfo) {
+     // 文件保存路径
+     const file = path.resolve(__dirname, '../data/course.json')
+
+     // JSON 文件内容
+     let content: JSONContent = {}
+
+     // 判断文件是否存在
+     if (fs.existsSync(file)) {
+       content = JSON.parse(fs.readFileSync(file, 'utf8'))
+     }
+     content[courseInfo.time] = courseInfo.list
+
+     // 保存至文件
+     fs.writeFileSync(file, JSON.stringify(content))
+   }
+   ```
+
+4. 在 `startSpider` 方法中调用 `generateJSONContent`：
+
+   ```ts
+   async startSpider() {
+     const html = await this.getRawHtml()
+     const result = this.getCourseInfo(html)
+     this.generateJSONContent(result)
+   }
+   ```
+
+5. 运行 `yarn dev` 确保**课程信息**能够正确保存到 `/data/course.json` 文件。
