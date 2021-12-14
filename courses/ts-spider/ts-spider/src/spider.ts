@@ -56,7 +56,7 @@ class Spider {
    * 从 url 抓取完整的 HTML
    * @returns html
    */
-  async getRawHtml() {
+  async getRawHtml(): Promise<string> {
     const { text: html } = await superagent.get(this.url)
     return html
   }

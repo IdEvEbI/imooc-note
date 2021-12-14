@@ -27,7 +27,7 @@
    ```json
    "scripts": {
      "dev": "ts-node ./src/spider.ts"
-   },
+   }
    ```
 
 5. 新建 `src/spider.ts` 并输入以下代码：
@@ -97,7 +97,7 @@
     * 从 url 抓取完整的 HTML
     * @returns html
     */
-   async getRawHtml() {
+   async getRawHtml(): Promise<string> {
      const { text: html } = await superagent.get(this.url)
      return html
    }
