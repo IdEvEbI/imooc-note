@@ -229,38 +229,46 @@
    }
    ```
 
-3. 编写 `generateJSONContent` 方法，用于讲课程信息保存到文件：
+3. 编写 `generateJSONContent` 方法，用于将**课程信息**按照 JSON 内容结构转换成课程内容：
 
    ```ts
    /**
-    * 生成 JSON 课程内容并保存到文件
+    * 生成 JSON 课程内容
     * @param courseInfo 课程信息
+    * @returns 课程内容
     */
-   generateJSONContent(courseInfo: CourseInfo) {
+   generateJSONContent(courseInfo: CourseInfo): JSONContent {
      // 文件保存路径
-     const file = path.resolve(__dirname, '../data/course.json')
+     const filePath = path.resolve(__dirname, '../data/course.json')
 
      // JSON 文件内容
      let content: JSONContent = {}
 
      // 判断文件是否存在
-     if (fs.existsSync(file)) {
-       content = JSON.parse(fs.readFileSync(file, 'utf8'))
+     if (fs.existsSync(filePath)) {
+       content = JSON.parse(fs.readFileSync(filePath, 'utf8'))
      }
      content[courseInfo.time] = courseInfo.list
 
-     // 保存至文件
-     fs.writeFileSync(file, JSON.stringify(content))
+     return content
    }
    ```
 
-4. 在 `startSpider` 方法中调用 `generateJSONContent`：
+4. 在 `startSpider` 方法中调用 `generateJSONContent`，并把课程内容写入文件：
 
    ```ts
+   /**
+    * 启动爬虫抓取数据
+    */
    async startSpider() {
+     // 文件保存路径
+     const filePath = path.resolve(__dirname, '../data/course.json')
+
      const html = await this.getRawHtml()
      const result = this.getCourseInfo(html)
-     this.generateJSONContent(result)
+     const content = this.generateJSONContent(result)
+
+     fs.writeFileSync(filePath, JSON.stringify(content))
    }
    ```
 
