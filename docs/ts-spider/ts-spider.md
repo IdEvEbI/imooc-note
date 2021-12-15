@@ -229,7 +229,13 @@
    }
    ```
 
-3. 编写 `generateJSONContent` 方法，用于将**课程信息**按照 JSON 内容结构转换成课程内容：
+3. 在 `Spider` 类中定义私有属性，记录保存数据文件的路径：
+
+   ```ts
+   private filePath = path.resolve(__dirname, '../data/course.json')
+   ```
+
+4. 编写 `generateJSONContent` 方法，用于将**课程信息**按照 JSON 内容结构转换成课程内容：
 
    ```ts
    /**
@@ -238,15 +244,12 @@
     * @returns 课程内容
     */
    generateJSONContent(courseInfo: CourseInfo): JSONContent {
-     // 文件保存路径
-     const filePath = path.resolve(__dirname, '../data/course.json')
-
      // JSON 文件内容
      let content: JSONContent = {}
 
      // 判断文件是否存在
-     if (fs.existsSync(filePath)) {
-       content = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+     if (fs.existsSync(this.filePath)) {
+       content = JSON.parse(fs.readFileSync(this.filePath, 'utf8'))
      }
      content[courseInfo.time] = courseInfo.list
 
@@ -254,22 +257,34 @@
    }
    ```
 
-4. 在 `startSpider` 方法中调用 `generateJSONContent`，并把课程内容写入文件：
+5. 准备 `writeFile` 方法，将课程内容写入到文件：
+
+   ```ts
+   /**
+    * 将课程内容写入到文件
+    * @param content JSON 格式的字符串
+    */
+   writeFile(content: string) {
+     fs.writeFileSync(this.filePath, content)
+   }
+   ```
+
+6. 在 `startSpider` 方法中调用 `generateJSONContent`，并把课程内容写入文件：
 
    ```ts
    /**
     * 启动爬虫抓取数据
     */
    async startSpider() {
-     // 文件保存路径
-     const filePath = path.resolve(__dirname, '../data/course.json')
-
+     // 1. 抓取网页内容
      const html = await this.getRawHtml()
+     // 2. 提取课程信息
      const result = this.getCourseInfo(html)
+     // 3. 生成课程内容
      const content = this.generateJSONContent(result)
-
-     fs.writeFileSync(filePath, JSON.stringify(content))
+     // 4. 写入文件
+     this.writeFile(JSON.stringify(content))
    }
    ```
 
-5. 运行 `yarn dev` 确保**课程信息**能够正确保存到 `/data/course.json` 文件。
+7. 运行 `yarn dev` 确保**课程信息**能够正确保存到 `/data/course.json` 文件。
