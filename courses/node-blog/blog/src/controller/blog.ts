@@ -37,3 +37,16 @@ export const blogDetail = (id = 1) => {
     author: 'zhangsan'
   }
 }
+
+/**
+ * 新建一篇博客
+ * @param data 博客数据
+ * @returns 新建完成的博客数据
+ */
+export const newBlog = (data = {}) => {
+  return {
+    id: 1 + Math.floor(Math.random() * 10),
+    createtime: Date.now(),
+    ...data
+  }
+}

@@ -1,8 +1,16 @@
 import * as http from 'http'
 import { successResult } from '../model/resResult'
-import { blogList, blogDetail } from '../controller/blog'
+import {
+  blogList,
+  blogDetail,
+  newBlog
+} from '../controller/blog'
+import { postData } from '../utils/postData'
 
-const handleBlogRouter = (req: http.IncomingMessage, res: http.ServerResponse) => {
+const handleBlogRouter = async (
+  req: http.IncomingMessage,
+  res: http.ServerResponse) => {
+
   const method = req.method
   const url = req.url
   const path = url?.split('?')[0]
@@ -25,10 +33,12 @@ const handleBlogRouter = (req: http.IncomingMessage, res: http.ServerResponse) =
 
   // 新建一篇博客
   if (method === 'POST' && path === '/api/blog/new') {
-    return {
-      msg: '这是新建博客的接口'
-    }
+    const data = await postData(req)
+
+    return successResult(newBlog(data))
   }
+
+  console.log('come here===>')
 
   // 更新一篇博客
   if (method === 'POST' && path === '/api/blog/update') {

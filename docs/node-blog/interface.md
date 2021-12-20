@@ -349,7 +349,7 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
 
 ### 2.5 博客详情路由（返回假数据）
 
-1. 在 `/src/controller/blog.ts` 中实现如下代码，返回博客详情的假数据：
+1. 在 `/src/controller/blog.ts` 中实现 `blogDetail` 函数返回博客详情的假数据：
 
    ```ts
    /**
@@ -380,3 +380,112 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
    ```
 
 3. 在浏览器中访问 <http://localhost:8000/api/blog/detail?id=100> 测试**博客详情路由**正常。
+
+### 2.6 新建和更新博客路由
+
+1. 新建 `/src/utils/postData.ts`，实现如下代码处理 POST 提交的数据，代码如下：
+
+   ```ts
+   import * as http from 'http'
+
+   /** 获取 POST Data 的异步函数  */
+   type PromisePostData = (req: http.IncomingMessage) => Promise<object>
+
+   /**
+    * 获取 POST Data
+    * @param req HTTP 请求
+    * @returns Promise<object>
+    */
+   export const postData: PromisePostData = (req: http.IncomingMessage) => {
+     return new Promise((resolve, reject) => {
+       if (req.method !== 'POST') {
+         resolve({})
+         return
+       }
+       if (req.headers['content-type'] !== 'application/json') {
+         resolve({})
+         return
+       }
+       let data = ''
+       req.on('data', chunk => {
+         data += chunk.toString()
+       })
+       req.on('end', () => {
+         if (!data) {
+           resolve({})
+           return
+         }
+         resolve(JSON.parse(data))
+       })
+     })
+   }
+   ```
+
+2. 在 `/src/controller/blog.ts` 中实现 `newBlog` 函数返回新建博客的假数据：
+
+   ```ts
+   /**
+    * 新建一篇博客
+    * @param data 博客数据
+    * @returns 新建完成的博客数据
+    */
+   export const newBlog = (data = {}) => {
+     return {
+       id: 1 + Math.floor(Math.random() * 10),
+       createtime: Date.now(),
+       ...data
+     }
+   }
+   ```
+
+3. 修改 `/app.ts` 将 `serverHandle` 函数改为 `async` 函数，并使用 `await` 拦截路由函数返回结果：
+
+   ```ts
+   const serverHandle = async (req: http.IncomingMessage, res: http.ServerResponse) => {
+     // 设置返回格式 - JSON
+     res.setHeader('Content-type', 'application/json')
+
+     // 处理 blog 路由
+     const blogData = await handleBlogRouter(req, res)
+     if (blogData) {
+       res.end(JSON.stringify(blogData))
+
+       return
+     }
+
+     // 处理 user 路由
+     const userData = await handleUserRouter(req, res)
+     if (userData) {
+       res.end(JSON.stringify(userData))
+
+       return
+     }
+
+     // ...
+   ```
+
+4. 修改 `/src/router/blog.ts` 引入 `newBlog` 和 `postData`，并且把 `handleBlogRouter` 函数修改为 `async` 函数：
+
+   ```ts
+   import {
+     blogList,
+     blogDetail,
+     newBlog
+   } from '../controller/blog'
+   import { postData } from '../utils/postData'
+
+   const handleBlogRouter = async (
+     req: http.IncomingMessage,
+     res: http.ServerResponse) => {
+   ```
+
+5. 修改**新建一篇博客**路由处理代码：
+
+   ```ts
+   // 新建一篇博客
+   if (method === 'POST' && path === '/api/blog/new') {
+     const data = await postData(req)
+
+     return successResult(newBlog(data))
+   }
+   ```

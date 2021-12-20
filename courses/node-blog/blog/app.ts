@@ -2,12 +2,12 @@ import * as http from 'http'
 import handleBlogRouter from './src/router/blog'
 import handleUserRouter from './src/router/user'
 
-const serverHandle = (req: http.IncomingMessage, res: http.ServerResponse) => {
+const serverHandle = async (req: http.IncomingMessage, res: http.ServerResponse) => {
   // 设置返回格式 - JSON
   res.setHeader('Content-type', 'application/json')
 
   // 处理 blog 路由
-  const blogData = handleBlogRouter(req, res)
+  const blogData = await handleBlogRouter(req, res)
   if (blogData) {
     res.end(JSON.stringify(blogData))
 
@@ -15,7 +15,7 @@ const serverHandle = (req: http.IncomingMessage, res: http.ServerResponse) => {
   }
 
   // 处理 user 路由
-  const userData = handleUserRouter(req, res)
+  const userData = await handleUserRouter(req, res)
   if (userData) {
     res.end(JSON.stringify(userData))
 
