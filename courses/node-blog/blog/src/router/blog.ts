@@ -1,6 +1,6 @@
 import * as http from 'http'
 import { successResult, failResult } from '../model/resResult'
-import { blogList } from '../controller/blog'
+import { blogList, blogDetail } from '../controller/blog'
 
 const handleBlogRouter = (req: http.IncomingMessage, res: http.ServerResponse) => {
   const method = req.method
@@ -18,9 +18,9 @@ const handleBlogRouter = (req: http.IncomingMessage, res: http.ServerResponse) =
 
   // 获取博客详情
   if (method === 'GET' && path === '/api/blog/detail') {
-    return {
-      msg: '获取博客详情的接口'
-    }
+    const id = parseInt(params.get('id') || '1')
+
+    return successResult(blogDetail(id))
   }
 
   // 新建一篇博客

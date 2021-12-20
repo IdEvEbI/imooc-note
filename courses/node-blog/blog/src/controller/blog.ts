@@ -11,14 +11,29 @@ export const blogList = (author = '', keyword = '') => {
       title: '标题 A',
       content: '博客内容 A',
       createtime: 1640031817776,
-      author: 'zhangsan'
+      author
     },
     {
       id: 2,
       title: '标题 B',
       content: '博客内容B',
       createtime: 1640031817790,
-      author: 'lisi'
+      author
     },
   ]
+}
+
+/**
+ * 获取博客详情
+ * @param id 博客 id
+ * @returns 博客内容对象
+ */
+export const blogDetail = (id = 1) => {
+  return {
+    id,
+    title: '标题 A',
+    content: '博客内容 A',
+    createtime: 1640031817776,
+    author: 'zhangsan'
+  }
 }

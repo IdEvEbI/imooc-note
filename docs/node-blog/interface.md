@@ -299,14 +299,14 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
          title: '标题 A',
          content: '博客内容 A',
          createtime: 1640031817776,
-         author: 'zhangsan'
+         author
        },
        {
          id: 2,
          title: '标题 B',
          content: '博客内容B',
          createtime: 1640031817790,
-         author: 'lisi'
+         author
        },
      ]
    }
@@ -343,3 +343,37 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
    ```
 
 5. 在浏览器中访问 <http://localhost:8000/api/blog/list?author=zhangsan&keyword=node> 测试**博客列表路由**正常。
+
+### 2.5 博客详情路由（返回假数据）
+
+1. 在 `/src/controller/blog.ts` 中实现如下代码，返回博客详情的假数据：
+
+   ```ts
+   /**
+    * 获取博客详情
+    * @param id 博客 id
+    * @returns 博客内容对象
+    */
+   export const blogDetail = (id = 1) => {
+     return {
+       id,
+       title: '标题 A',
+       content: '博客内容 A',
+       createtime: 1640031817776,
+       author: 'zhangsan'
+     }
+   }
+   ```
+
+2. 修改 `/src/router/blog.ts` 中的**获取博客详情**路由处理代码：
+
+   ```ts
+   // 获取博客详情
+   if (method === 'GET' && path === '/api/blog/detail') {
+     const id = parseInt(params.get('id') || '1')
+
+     return successResult(blogDetail(id))
+   }
+   ```
+
+3. 在浏览器中访问 <http://localhost:8000/api/blog/detail?id=100> 测试**博客详情路由**正常。
