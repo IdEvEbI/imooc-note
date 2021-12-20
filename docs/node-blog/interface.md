@@ -71,7 +71,7 @@
 
 ### 1.2 HTTP 网络请求
 
-1. `GET` 请求和**请求参数**：`GET` 请求是客户端**向服务器要数据**，例如**获取博客列表**或者**获取某一条博客信息**。
+1. `GET` 请求和**请求参数**：`GET` 请求是客户端**从服务器获取数据**，例如**获取博客列表**或者**获取某一条博客信息**。
 
    ```ts
    // 请求方法
@@ -91,7 +91,7 @@
 
 2. `POST` 请求和 `postdata`：`POST` 请求是客户端**向服务器传递数据**，例如**新建一篇博客**或者**修改某一篇博客**。
 
-   > 提示：POST 方法通过 `postdata` 传递数据，浏览器无法直接模拟，可以**使用 postman 工具**模拟。
+   > 提示：POST 方法通过 `postdata` 传递数据，浏览器无法直接模拟，可以**使用 postman 工具**。
 
    ```ts
    if (method === 'POST') {
@@ -117,7 +117,7 @@
 1. **初始化路由**：根据之前技术方案的设计，做出路由
 2. **返回假数据**：将路由和数据处理分离，以符合设计原则
 
-### 3.2 初始化路由
+### 2.2 初始化路由
 
 1. 新建 `/src/router/user.ts` 和 `/src/router/blog.ts` 分别作为**用户**和**博客**的路由模块；
 
@@ -228,3 +228,56 @@
    ```
 
 5. 启动程序并使用 Postman 测试接口能够正常访问并返回数据。
+
+### 2.3 封装响应结果处理函数
+
+新建 `/src/model/resResult.ts` 并实现如下代码：
+
+```ts
+/** 响应数据 */
+type ResponseData = object | undefined | null
+/** 响应消息 */
+type ResponseMessage = string | undefined | null
+
+/**
+* 响应结果模型
+*/
+type ResponseModel = {
+  data: ResponseData
+  message: ResponseMessage
+  errno: number
+}
+
+/**
+* 响应结果函数类型
+*/
+type ResponseResult = (data: ResponseData, message: ResponseMessage) => ResponseModel
+
+/**
+* 成功响应
+* @param data 响应数据
+* @param message 响应消息
+* @returns 响应结果模型
+*/
+export const successResult: ResponseResult = (data, message) => {
+  return {
+    data,
+    message,
+    errno: 0
+  }
+}
+
+/**
+* 失败响应
+* @param data 响应数据
+* @param message 响应消息
+* @returns 响应结果模型
+*/
+export const errorResult: ResponseResult = (data, message) => {
+  return {
+    data,
+    message,
+    errno: -1
+  }
+}
+```

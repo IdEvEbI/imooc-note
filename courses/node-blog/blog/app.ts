@@ -3,7 +3,7 @@ import handleBlogRouter from "./src/router/blog"
 import handleUserRouter from "./src/router/user"
 
 const serverHandle = (req: http.IncomingMessage, res: http.ServerResponse) => {
-  // 设置返回格式 - JOSN
+  // 设置返回格式 - JSON
   res.setHeader('Content-type', 'application/json')
 
   // 处理 blog 路由
