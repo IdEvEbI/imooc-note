@@ -1,5 +1,5 @@
 import * as http from 'http'
-import { successResult, failResult } from '../model/resResult'
+import { successResult } from '../model/resResult'
 import { blogList, blogDetail } from '../controller/blog'
 
 const handleBlogRouter = (req: http.IncomingMessage, res: http.ServerResponse) => {

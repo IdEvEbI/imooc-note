@@ -19,7 +19,7 @@ export const blogList = (author = '', keyword = '') => {
       content: '博客内容B',
       createtime: 1640031817790,
       author
-    },
+    }
   ]
 }
 

@@ -13,13 +13,15 @@
 2. 安装项目基础依赖包，并创建 `tsconfig.json`：
 
    ```bash
-   yarn add -D typescript ts-node
+   yarn add -D typescript ts-node eslint
 
    yarn add -D @types/node
 
    yarn add -D nodemon cross-env
 
    npx tsc --init
+
+   npx eslint --init
    ```
 
 3. 新建 `/bin/www.ts` 并修改 `package.json` 的入口和脚本：
@@ -28,7 +30,8 @@
    "main": "bin/www.ts",
    "scripts": {
      "dev": "cross-env NODE_ENV=dev nodemon",
-     "prd": "cross-env NODE_ENV=production nodemon"
+     "prd": "cross-env NODE_ENV=production nodemon",
+     "lint": "eslint src --ext .js,.ts"
    }
    ```
 
@@ -307,7 +310,7 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
          content: '博客内容B',
          createtime: 1640031817790,
          author
-       },
+       }
      ]
    }
    ```
@@ -316,7 +319,7 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
 
    ```ts
    import * as http from 'http'
-   import { successResult, failResult } from '../model/resResult'
+   import { successResult } from '../model/resResult'
    import { blogList } from '../controller/blog'
    ```
 
