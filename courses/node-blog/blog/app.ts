@@ -1,16 +1,31 @@
 import * as http from "http"
+import handleBlogRouter from "./src/router/blog"
+import handleUserRouter from "./src/router/user"
 
 const serverHandle = (req: http.IncomingMessage, res: http.ServerResponse) => {
   // 设置返回格式 - JOSN
   res.setHeader('Content-type', 'application/json')
 
-  // 设置返回数据
-  const resData = {
-    course: 'Node Blog',
-    env: process.env.NODE_ENV
+  // 处理 blog 路由
+  const blogData = handleBlogRouter(req, res)
+  if (blogData) {
+    res.end(JSON.stringify(blogData))
+
+    return
   }
 
-  res.end(JSON.stringify(resData))
+  // 处理 user 路由
+  const userData = handleUserRouter(req, res)
+  if (userData) {
+    res.end(JSON.stringify(userData))
+
+    return
+  }
+
+  // 未命中路由返回 404
+  res.writeHead(404, { 'Content-type': 'text/plain' })
+  res.write('404 Not Found')
+  res.end()
 }
 
 export default serverHandle

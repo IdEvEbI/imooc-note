@@ -13,9 +13,9 @@
   - 运行在服务器，作为 Web Server
   - 运行在本地，作为打包、构建工具
 - 课程概述
-  - 做什么？Node.js 从入门到实战，开发个人博客系统（后端）
-  - 讲什么？API、数据存储、登录、日志、安全
-  - 技术？：http、stream、session、mysql、redis、nginx、pm2
+  - 做什么：Node.js 从入门到实战，开发个人博客系统（后端）
+  - 讲什么：API、数据存储、登录、日志、安全
+  - 技术：http、stream、session、mysql、redis、nginx、pm2
 - 课程路径
   - 课程准备：Node.js 介绍、服务端特点、案例分析和设计
   - 原生代码：API 和数据存储、登录和 redis、安全和日志

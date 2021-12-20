@@ -36,11 +36,11 @@
 
 ### 3.2 接口设计
 
-| 接口             | 方法   | 参数                            | 备注                      |
-| ---------------- | ------ | ------------------------------- | ------------------------- |
-| /api/blog/list   | get    | author 作者，keyword 搜索关键字 | 参数为空则不进行过滤      |
-| /api/blog/detail | get    | id                              |                           |
-| /api/blog/new    | post   |                                 | post 中有新增的信息       |
-| /api/blog/update | put    | id                              | postData 中有更新的信息   |
-| /api/blog/del    | delete | id                              |                           |
-| /api/blog/login  | post   |                                 | postData 中有用户名和密码 |
+| 接口             | 方法 | 参数                            | 备注                      |
+| ---------------- | ---- | ------------------------------- | ------------------------- |
+| /api/blog/list   | GET  | author 作者，keyword 搜索关键字 | 参数为空则不进行过滤      |
+| /api/blog/detail | GET  | id                              |                           |
+| /api/blog/new    | POST |                                 | post 中有新增的信息       |
+| /api/blog/update | POST | id                              | postData 中有更新的信息   |
+| /api/blog/del    | POST | id                              |                           |
+| /api/user/login  | POST |                                 | postData 中有用户名和密码 |
