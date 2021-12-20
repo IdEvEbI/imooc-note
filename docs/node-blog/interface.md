@@ -37,7 +37,7 @@
 4. 新建 `/app.ts` 并编写如下代码：
 
    ```ts
-   import * as http from "http"
+   import * as http from 'http'
 
    const serverHandle = (req: http.IncomingMessage, res: http.ServerResponse) => {
      // 设置返回格式 - JSON
@@ -124,7 +124,7 @@
 2. 编写 `/src/router/blog.ts` 的代码如下：
 
    ```ts
-   import * as http from "http"
+   import * as http from 'http'
 
    const handleBlogRouter = (req: http.IncomingMessage, res: http.ServerResponse) => {
      const method = req.method
@@ -173,7 +173,7 @@
 3. 编写 `/src/router/user.ts` 的代码如下：
 
    ```ts
-   import * as http from "http"
+   import * as http from 'http'
 
    const handleUserRouter = (req: http.IncomingMessage, res: http.ServerResponse) => {
      const method = req.method
@@ -194,9 +194,9 @@
 4. 修改 `/app.ts` 的代码如下：
 
    ```ts
-   import * as http from "http"
-   import handleBlogRouter from "./src/router/blog"
-   import handleUserRouter from "./src/router/user"
+   import * as http from 'http'
+   import handleBlogRouter from './src/router/blog'
+   import handleUserRouter from './src/router/user'
 
    const serverHandle = (req: http.IncomingMessage, res: http.ServerResponse) => {
      // 设置返回格式 - JSON
@@ -236,30 +236,28 @@
 ```ts
 /** 响应数据 */
 type ResponseData = object | undefined | null
-/** 响应消息 */
-type ResponseMessage = string | undefined | null
 
 /**
-* 响应结果模型
-*/
+ * 响应结果模型
+ */
 type ResponseModel = {
   data: ResponseData
-  message: ResponseMessage
+  message: string
   errno: number
 }
 
 /**
-* 响应结果函数类型
-*/
-type ResponseResult = (data: ResponseData, message: ResponseMessage) => ResponseModel
+ * 响应结果函数类型
+ */
+type ResponseResult = (data?: ResponseData, message?: string) => ResponseModel
 
 /**
-* 成功响应
-* @param data 响应数据
-* @param message 响应消息
-* @returns 响应结果模型
-*/
-export const successResult: ResponseResult = (data, message) => {
+ * 成功响应
+ * @param data 响应数据
+ * @param message 响应消息
+ * @returns 响应结果模型
+ */
+export const successResult: ResponseResult = (data, message = 'success') => {
   return {
     data,
     message,
@@ -268,16 +266,80 @@ export const successResult: ResponseResult = (data, message) => {
 }
 
 /**
-* 失败响应
-* @param data 响应数据
-* @param message 响应消息
-* @returns 响应结果模型
-*/
-export const errorResult: ResponseResult = (data, message) => {
+ * 失败响应
+ * @param data 响应数据
+ * @param message 响应消息
+ * @returns 响应结果模型
+ */
+export const failResult: ResponseResult = (data, message = 'failed') => {
   return {
     data,
     message,
     errno: -1
   }
 }
+
 ```
+
+### 2.4 博客列表路由（返回假数据）
+
+1. 新建 `/src/controller/blog.ts` 并实现如下代码，返回假数据：
+
+   ```ts
+   /**
+    * 获取博客列表
+    * @param _author 作者
+    * @param keyword 关键字
+    * @returns 博客列表
+    */
+   export const blogList = (author = '', keyword = '') => {
+     return [
+       {
+         id: 1,
+         title: '标题 A',
+         content: '博客内容 A',
+         createtime: 1640031817776,
+         author: 'zhangsan'
+       },
+       {
+         id: 2,
+         title: '标题 B',
+         content: '博客内容B',
+         createtime: 1640031817790,
+         author: 'lisi'
+       },
+     ]
+   }
+   ```
+
+2. 修改 `/src/router/blog.ts` 导入**响应结果**和**博客列表**函数：
+
+   ```ts
+   import * as http from 'http'
+   import { successResult, failResult } from '../model/resResult'
+   import { blogList } from '../controller/blog'
+   ```
+
+3. 修改 `handleBlogRouter` 函数的 url 参数处理：
+
+   ```ts
+   const handleBlogRouter = (req: http.IncomingMessage, res: http.ServerResponse) => {
+   const method = req.method
+   const url = req.url
+   const path = url?.split('?')[0]
+   const params = new URLSearchParams(url?.split('?')[1])
+   ```
+
+4. 修改**获取博客列表**路由处理代码：
+
+   ```ts
+   // 获取博客列表
+   if (method === 'GET' && path === '/api/blog/list') {
+     const author = params.get('author') || ''
+     const keyword = params.get('keyword') || ''
+
+     return successResult(blogList(author, keyword))
+   }
+   ```
+
+5. 在浏览器中访问 <http://localhost:8000/api/blog/list?author=zhangsan&keyword=node> 测试**博客列表路由**正常。

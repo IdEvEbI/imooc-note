@@ -1,6 +1,6 @@
-import * as http from "http"
-import handleBlogRouter from "./src/router/blog"
-import handleUserRouter from "./src/router/user"
+import * as http from 'http'
+import handleBlogRouter from './src/router/blog'
+import handleUserRouter from './src/router/user'
 
 const serverHandle = (req: http.IncomingMessage, res: http.ServerResponse) => {
   // 设置返回格式 - JSON

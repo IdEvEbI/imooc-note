@@ -1,15 +1,19 @@
-import * as http from "http"
+import * as http from 'http'
+import { successResult, failResult } from '../model/resResult'
+import { blogList } from '../controller/blog'
 
 const handleBlogRouter = (req: http.IncomingMessage, res: http.ServerResponse) => {
   const method = req.method
   const url = req.url
   const path = url?.split('?')[0]
+  const params = new URLSearchParams(url?.split('?')[1])
 
   // 获取博客列表
   if (method === 'GET' && path === '/api/blog/list') {
-    return {
-      msg: '获取博客列表的接口'
-    }
+    const author = params.get('author') || ''
+    const keyword = params.get('keyword') || ''
+
+    return successResult(blogList(author, keyword))
   }
 
   // 获取博客详情

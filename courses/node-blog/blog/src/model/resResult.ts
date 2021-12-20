@@ -1,21 +1,19 @@
 /** 响应数据 */
 type ResponseData = object | undefined | null
-/** 响应消息 */
-type ResponseMessage = string | undefined | null
 
 /**
  * 响应结果模型
  */
 type ResponseModel = {
   data: ResponseData
-  message: ResponseMessage
+  message: string
   errno: number
 }
 
 /**
  * 响应结果函数类型
  */
-type ResponseResult = (data: ResponseData, message: ResponseMessage) => ResponseModel
+type ResponseResult = (data?: ResponseData, message?: string) => ResponseModel
 
 /**
  * 成功响应
@@ -23,7 +21,7 @@ type ResponseResult = (data: ResponseData, message: ResponseMessage) => Response
  * @param message 响应消息
  * @returns 响应结果模型
  */
-export const successResult: ResponseResult = (data, message) => {
+export const successResult: ResponseResult = (data, message = 'success') => {
   return {
     data,
     message,
@@ -37,7 +35,7 @@ export const successResult: ResponseResult = (data, message) => {
  * @param message 响应消息
  * @returns 响应结果模型
  */
-export const errorResult: ResponseResult = (data, message) => {
+export const failResult: ResponseResult = (data, message = 'failed') => {
   return {
     data,
     message,
