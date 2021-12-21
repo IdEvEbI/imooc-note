@@ -7,7 +7,7 @@
 1. 新建 `blog` 目录，并初始化 `npm` 包：
 
    ```bash
-   npm init -y
+   yarn init -y
    ```
 
 2. 安装项目基础依赖包，并创建 `tsconfig.json`：

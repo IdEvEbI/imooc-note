@@ -32,4 +32,4 @@
 
 1. [需求与技术方案](./requirement.md)
 2. [开发博客系统接口](./interface.md)
-3. [CentOS 安装笔记](./centos.md)
+3. [开发博客系统数据存储](./)
