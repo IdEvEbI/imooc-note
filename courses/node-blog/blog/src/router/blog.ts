@@ -1,6 +1,6 @@
 import * as http from 'http'
 
-import { successResult } from '../model/resResult'
+import { failResult, successResult } from '../model/resResult'
 import {
   blogList,
   blogDetail,
@@ -44,17 +44,19 @@ const handleBlogRouter = async (
   if (method === 'POST' && path === '/api/blog/update') {
     const id = parseInt(params.get('id') || '1')
     const data = await postData(req)
-    updateBlog(id, data)
 
-    return successResult(undefined, 'update success')
+    return updateBlog(id, data)
+      ? successResult(undefined, 'update success')
+      : failResult(undefined, 'update failed')
   }
 
   // 删除一篇博客
   if (method === 'POST' && path === '/api/blog/del') {
     const id = parseInt(params.get('id') || '1')
-    deleteBlog(id)
 
-    return successResult(undefined, 'delete success')
+    return deleteBlog(id)
+      ? successResult(undefined, 'delete success')
+      : failResult(undefined, 'delete failed')
   }
 }
 

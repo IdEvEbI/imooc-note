@@ -542,9 +542,10 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
    if (method === 'POST' && path === '/api/blog/update') {
      const id = parseInt(params.get('id') || '1')
      const data = await postData(req)
-     updateBlog(id, data)
 
-     return successResult(undefined, 'update success')
+     return updateBlog(id, data)
+       ? successResult(undefined, 'update success')
+       : failResult(undefined, 'update failed')
    }
    ```
 
@@ -553,8 +554,54 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
    ```ts
    if (method === 'POST' && path === '/api/blog/del') {
      const id = parseInt(params.get('id') || '1')
-     deleteBlog(id)
 
-     return successResult(undefined, 'delete success')
+     return deleteBlog(id)
+       ? successResult(undefined, 'delete success')
+       : failResult(undefined, 'delete failed')
+   }
+   ```
+
+### 2.8 用户登录路由
+
+1. 新建 `/src/controller/user.ts` 中实现 `userLogin` 函数模拟**用户登录**：
+
+   ```ts
+   /**
+    * 用户登录
+    * @param username 用户名
+    * @param password 密码
+    * @returns 是否登录成功
+    */
+   export const userLogin = (username: string, password: string) => {
+     return (username === 'zhangsan' && password === '123')
+   }
+   ```
+
+2. 修改 `/src/router/blog.ts` 引入模块：
+
+   ```ts
+   import * as http from 'http'
+   import { userLogin } from '../controller/user'
+   import { successResult, failResult } from '../model/resResult'
+   import { postData } from '../utils/postData'
+   ```
+
+3. 将 `handleUserRouter` 修改为 `async` 函数并实现**用户登录**路由处理代码：
+
+   ```ts
+   const handleUserRouter = async (req: http.IncomingMessage, res: http.ServerResponse) => {
+     const method = req.method
+     const url = req.url
+     const path = url?.split('?')[0]
+
+     // 用户登录
+     if (method === 'POST' && path === '/api/user/login') {
+       const data = await postData(req)
+       const { username, password } = data as {username: string, password: string}
+
+       return userLogin(username, password)
+         ? successResult(undefined, 'login success')
+         : failResult(undefined, 'login failed')
+     }
    }
    ```
