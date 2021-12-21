@@ -1,16 +1,18 @@
 import * as http from 'http'
+
 import { successResult } from '../model/resResult'
 import {
   blogList,
   blogDetail,
-  newBlog
+  newBlog,
+  updateBlog,
+  deleteBlog
 } from '../controller/blog'
 import { postData } from '../utils/postData'
 
 const handleBlogRouter = async (
   req: http.IncomingMessage,
   res: http.ServerResponse) => {
-
   const method = req.method
   const url = req.url
   const path = url?.split('?')[0]
@@ -38,20 +40,21 @@ const handleBlogRouter = async (
     return successResult(newBlog(data))
   }
 
-  console.log('come here===>')
-
   // 更新一篇博客
   if (method === 'POST' && path === '/api/blog/update') {
-    return {
-      msg: '这是更新博客的接口'
-    }
+    const id = parseInt(params.get('id') || '1')
+    const data = await postData(req)
+    updateBlog(id, data)
+
+    return successResult(undefined, 'update success')
   }
 
   // 删除一篇博客
   if (method === 'POST' && path === '/api/blog/del') {
-    return {
-      msg: '这是删除博客的接口'
-    }
+    const id = parseInt(params.get('id') || '1')
+    deleteBlog(id)
+
+    return successResult(undefined, 'delete success')
   }
 }
 

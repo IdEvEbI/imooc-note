@@ -50,3 +50,26 @@ export const newBlog = (data = {}) => {
     ...data
   }
 }
+
+/**
+ * 使用博客数据更新指定 id 的博客
+ * @param id 博客 id
+ * @param data 博客数据
+ * @returns 是否更新成功
+ */
+export const updateBlog = (id: number, data = {}) => {
+  console.log('Update Blog =>', data)
+
+  return true
+}
+
+/**
+ * 删除指定 id 的博客
+ * @param id 博客 id
+ * @returns 是否删除成功
+ */
+export const deleteBlog = (id: number) => {
+  console.log(`DELETE ${id} 的博客`)
+
+  return true
+}

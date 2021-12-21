@@ -381,7 +381,7 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
 
 3. 在浏览器中访问 <http://localhost:8000/api/blog/detail?id=100> 测试**博客详情路由**正常。
 
-### 2.6 新建和更新博客路由
+### 2.6 POST Data 和新建博客路由
 
 1. 新建 `/src/utils/postData.ts`，实现如下代码处理 POST 提交的数据，代码如下：
 
@@ -421,7 +421,7 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
    }
    ```
 
-2. 在 `/src/controller/blog.ts` 中实现 `newBlog` 函数返回新建博客的假数据：
+2. 在 `/src/controller/blog.ts` 中实现 `newBlog` 函数返回**新建博客**的假数据：
 
    ```ts
    /**
@@ -487,5 +487,74 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
      const data = await postData(req)
 
      return successResult(newBlog(data))
+   }
+   ```
+
+### 2.7 更新博客 & 删除博客路由
+
+1. 在 `/src/controller/blog.ts` 中实现 `updateBlog` 函数模拟**更新博客**：
+
+   ```ts
+   /**
+    * 使用博客数据更新指定 id 的博客
+    * @param id 博客 id
+    * @param data 博客数据
+    * @returns 是否更新成功
+    */
+   export const updateBlog = (id: number, data = {}) => {
+     console.log('Update Blog =>', data)
+
+     return true
+   }
+   ```
+
+2. 实现 `deleteBlog` 函数模拟**删除博客**：
+
+   ```ts
+   /**
+    * 删除指定 id 的博客
+    * @param id 博客 id
+    * @returns 是否删除成功
+    */
+   export const deleteBlog = (id: number) => {
+     console.log(`DELETE ${id} 的博客`)
+
+     return true
+   }
+   ```
+
+3. 修改 `/src/router/blog.ts` 引入 `updateBlog` 和 `deleteBlog`：
+
+   ```ts
+   import {
+     blogList,
+     blogDetail,
+     newBlog,
+     updateBlog,
+     deleteBlog
+   } from '../controller/blog'
+   ```
+
+4. 修改**更新一篇博客**路由处理代码：
+
+   ```ts
+   // 更新一篇博客
+   if (method === 'POST' && path === '/api/blog/update') {
+     const id = parseInt(params.get('id') || '1')
+     const data = await postData(req)
+     updateBlog(id, data)
+
+     return successResult(undefined, 'update success')
+   }
+   ```
+
+5. 修改**删除一篇博客**路由处理代码：
+
+   ```ts
+   if (method === 'POST' && path === '/api/blog/del') {
+     const id = parseInt(params.get('id') || '1')
+     deleteBlog(id)
+
+     return successResult(undefined, 'delete success')
    }
    ```
