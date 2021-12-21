@@ -19,7 +19,9 @@ MySQL 数据存储目标：
 2. 安装项目基础依赖包，并创建 `tsconfig.json`：
 
    ```bash
-   yarn add -D mysql typescript ts-node eslint nodemon
+   yarn add mysql
+
+   yarn add -D typescript ts-node eslint nodemon
 
    yarn add -D @types/node @types/mysql
 
