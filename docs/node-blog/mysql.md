@@ -8,7 +8,40 @@ MySQL 数据存储目标：
 2. **封装**：将 MySQL 操作封装为工具库；
 3. **应用**：让博客系统直接操作数据库，不再使用假数据。
 
-## 1. Node.js 操作 MySQL
+## 1. 数据库建库和建表
+
+1. 建库 `myblog`
+
+   ```sql
+   CREATE SCHEMA `myblog` DEFAULT CHARACTER SET utf8;
+   ```
+
+2. 建表 `users`
+
+   ```sql
+   CREATE TABLE `users` (
+     `id` int(11) NOT NULL AUTO_INCREMENT,
+     `username` varchar(40) NOT NULL,
+     `password` varchar(40) NOT NULL,
+     `realname` varchar(20) NOT NULL,
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+   ```
+
+3. 建表 `blogs`：
+
+   ```sql
+   CREATE TABLE `blogs` (
+     `id` int(11) NOT NULL AUTO_INCREMENT,
+     `title` varchar(100) NOT NULL,
+     `content` longtext NOT NULL,
+     `createtime` bigint(20) NOT NULL,
+     `author` varchar(40) NOT NULL,
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+   ```
+
+## 2. Node.js 操作 MySQL
 
 1. 新建 `demo-mysql` 目录，并初始化 `npm` 包：
 
@@ -73,3 +106,71 @@ MySQL 数据存储目标：
    ```
 
 5. 运行 `yarn start` 并且尝试修改 SQL，观察控制台的运行结果。
+
+## 2. 封装 MySQL 工具
+
+1. 回到 `blog` 项目，安装 `mysql` 包：
+
+   ```bash
+   yarn add mysql
+
+   yarn add -D @types/mysql
+   ```
+
+2. 新建 `/src/conf/db.ts` 实现如下代码：
+
+   ```ts
+   import * as mysql from 'mysql'
+
+   // 环境参数
+   const env = process.env.NODE_ENV
+
+   // 数据库连接配置
+   export let MYSQL_CONF: mysql.ConnectionConfig = {}
+
+   if (env === 'dev') {
+     MYSQL_CONF = {
+       host: 'centos.local',
+       user: 'heima',
+       password: '123456',
+       port: 3306,
+       database: 'myblog'
+     }
+   }
+
+   if (env === 'production') {
+     MYSQL_CONF = {
+       host: 'centos.local',
+       user: 'heima',
+       password: '123456',
+       port: 3306,
+       database: 'myblog'
+     }
+   }
+   ```
+
+3. 新建 `/src/db/mysql.ts` 实现如下代码：
+
+   ```ts
+   import * as mysql from 'mysql'
+   import { MYSQL_CONF } from '../conf/db'
+
+   // 创建连接对象
+   const con = mysql.createConnection(MYSQL_CONF)
+
+   // 开始连接
+   con.connect()
+
+   export const exec = (sql: string) => {
+     return new Promise((resolve, reject) => {
+       con.query(sql, (err, result) => {
+         if (err) {
+           console.error(err)
+           reject(err)
+           return
+         }
+         resolve(result)
+       })
+     })
+   }
+   ```
