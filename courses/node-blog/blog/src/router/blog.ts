@@ -23,7 +23,8 @@ const handleBlogRouter = async (
     const author = params.get('author') || ''
     const keyword = params.get('keyword') || ''
 
-    return successResult(blogList(author, keyword))
+    const result = await blogList(author, keyword)
+    return successResult(result)
   }
 
   // 获取博客详情

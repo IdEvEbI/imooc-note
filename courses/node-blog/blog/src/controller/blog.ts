@@ -1,26 +1,24 @@
+import { exec } from '../db/mysql'
+
 /**
  * 获取博客列表
- * @param _author 作者
+ * @param author 作者
  * @param keyword 关键字
  * @returns 博客列表
  */
 export const blogList = (author = '', keyword = '') => {
-  return [
-    {
-      id: 1,
-      title: '标题 A',
-      content: '博客内容 A',
-      createtime: 1640031817776,
-      author
-    },
-    {
-      id: 2,
-      title: '标题 B',
-      content: '博客内容B',
-      createtime: 1640031817790,
-      author
-    }
-  ]
+  let sql = `SELECT id, title, content, createtime, author
+    FROM blogs WHERE 1 = 1 `
+
+  if (author) {
+    sql += `AND author = '${author}' `
+  }
+  if (keyword) {
+    sql += `AND content LIKE '%${keyword}%' `
+  }
+  sql += 'ORDER BY createtime DESC;'
+
+  return exec(sql)
 }
 
 /**

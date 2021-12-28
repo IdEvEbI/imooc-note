@@ -155,13 +155,16 @@ MySQL 数据存储目标：
    import * as mysql from 'mysql'
    import { MYSQL_CONF } from '../conf/db'
 
+   // 查询结果
+   type QueryResult = (sql: string) => Promise<object>
+
    // 创建连接对象
    const con = mysql.createConnection(MYSQL_CONF)
 
    // 开始连接
    con.connect()
 
-   export const exec = (sql: string) => {
+   export const exec:QueryResult = (sql: string) => {
      return new Promise((resolve, reject) => {
        con.query(sql, (err, result) => {
          if (err) {
@@ -172,5 +175,49 @@ MySQL 数据存储目标：
          resolve(result)
        })
      })
+   }
+   ```
+
+## 3. 对接数据库
+
+### 3.1 博客列表
+
+1. 修改 `/src/controller/blog.ts` 中的 `blogList` 方法，返回一个执行 SQL 的 `Promise`，代码如下：
+
+   ```ts
+   import { exec } from '../db/mysql'
+
+   /**
+    * 获取博客列表
+    * @param author 作者
+    * @param keyword 关键字
+    * @returns 博客列表
+    */
+   export const blogList = (author = '', keyword = '') => {
+     let sql = `SELECT id, title, content, createtime, author
+       FROM blogs WHERE 1 = 1 `
+
+     if (author) {
+       sql += `AND author = '${author}' `
+     }
+     if (keyword) {
+       sql += `AND content LIKE '%${keyword}%' `
+     }
+     sql += 'ORDER BY createtime DESC;'
+
+     return exec(sql)
+   }
+   ```
+
+2. 修改 `/src/router/blog.ts` 中**获取博客列表**的路由处理代码：
+
+   ```ts
+   // 获取博客列表
+   if (method === 'GET' && path === '/api/blog/list') {
+     const author = params.get('author') || ''
+     const keyword = params.get('keyword') || ''
+
+     const result = await blogList(author, keyword)
+     return successResult(result)
    }
    ```

@@ -291,7 +291,7 @@ export const failResult: ResponseResult = (data, message = 'failed') => {
    ```ts
    /**
     * 获取博客列表
-    * @param _author 作者
+    * @param author 作者
     * @param keyword 关键字
     * @returns 博客列表
     */
