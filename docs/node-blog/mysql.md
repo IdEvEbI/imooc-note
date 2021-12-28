@@ -217,7 +217,83 @@ MySQL 数据存储目标：
      const author = params.get('author') || ''
      const keyword = params.get('keyword') || ''
 
-     const result = await blogList(author, keyword)
-     return successResult(result)
+     return successResult(await blogList(author, keyword))
+   }
+   ```
+
+### 3.2 博客详情
+
+1. 修改 `/src/controller/blog.ts` 中的 `blogDetail` 方法，返回一个执行 SQL 的 `Promise`，代码如下：
+
+   ```ts
+   /**
+    * 获取博客详情
+    * @param id 博客 id
+    * @returns 博客内容对象
+    */
+   export const blogDetail = (id = 0) => {
+     const sql = `SELECT id, title, content, createtime, author
+     FROM blogs WHERE 1 = 1 AND id = ${id}; `
+
+     return exec(sql).then(rows => (rows as object[])[0])
+   }
+   ```
+
+2. 修改 `/src/router/blog.ts` 中**获取博客详情**的路由处理代码：
+
+   ```ts
+   // 获取博客详情
+   if (method === 'GET' && path === '/api/blog/detail') {
+     const id = parseInt(params.get('id') || '0')
+
+     return successResult(await blogDetail(id))
+   }
+   ```
+
+### 3.3 新建博客
+
+1. 在 `/src/controller/blog.ts` 中定义博客数据类型：
+
+   ```ts
+   // 博客数据类型
+   type BlogData = {
+     id?: number,
+     title?: string,
+     content?: string,
+     createTime?: number,
+     author?: string
+   }
+   ```
+
+2. 修改 `newBlog` 方法，返回一个执行 SQL 的 `Promise`，代码如下：
+
+   ```ts
+   /**
+    * 新建一篇博客
+    * @param data 博客数据
+    * @returns 新建完成的博客 id
+    */
+   export const newBlog = (data: BlogData = {}) => {
+     const { title, content, author } = data
+     const createTime = Date.now()
+
+     const sql = `INSERT INTO blogs (title, content, createtime, author)
+       VALUES ('${title}', '${content}', ${createTime}, '${author}');
+     `
+
+     return exec(sql).then(insertData => {
+       return { id: (insertData as OkPacket).insertId }
+     })
+   }
+   ```
+
+3. 修改 `/src/router/blog.ts` 中**新建一篇博客**的路由处理代码：
+
+   ```ts
+   // 新建一篇博客
+   if (method === 'POST' && path === '/api/blog/new') {
+     const data = await postData(req)
+
+     return successResult(await newBlog(data))
    }
    ```
