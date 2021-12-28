@@ -13,7 +13,9 @@ const handleUserRouter = async (req: http.IncomingMessage, res: http.ServerRespo
     const data = await postData(req)
     const { username, password } = data as {username: string, password: string}
 
-    return userLogin(username, password)
+    const result = await userLogin(username, password)
+
+    return (result)
       ? successResult(undefined, 'login success')
       : failResult(undefined, 'login failed')
   }

@@ -364,3 +364,41 @@ MySQL 数据存储目标：
        : failResult(undefined, 'delete failed')
    }
    ```
+
+### 3.6 用户登录
+
+1. 修改 `/src/controller/user.ts` 中的 `userLogin` 方法，返回一个执行 SQL 的 `Promise`，代码如下：
+
+   ```ts
+   import { exec } from '../db/mysql'
+
+   /**
+    * 用户登录
+    * @param username 用户名
+    * @param password 密码
+    * @returns 用户信息记录
+    */
+   export const userLogin = (username: string, password: string) => {
+     const sql = `SELECT username, realname
+       FROM users
+       WHERE username = '${username}' AND password = '${password}';`
+
+     return exec(sql).then(rows => (rows as object[])[0])
+   }
+   ```
+
+2. 修改 `/src/router/user.ts` 中**用户登录**的路由处理代码：
+
+   ```ts
+   // 用户登录
+   if (method === 'POST' && path === '/api/user/login') {
+     const data = await postData(req)
+     const { username, password } = data as {username: string, password: string}
+
+     const result = await userLogin(username, password)
+
+     return (result)
+       ? successResult(undefined, 'login success')
+       : failResult(undefined, 'login failed')
+   }
+   ```

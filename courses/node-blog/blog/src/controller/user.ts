@@ -1,9 +1,15 @@
+import { exec } from '../db/mysql'
+
 /**
  * 用户登录
  * @param username 用户名
  * @param password 密码
- * @returns 是否登录成功
+ * @returns 用户信息记录
  */
 export const userLogin = (username: string, password: string) => {
-  return (username === 'zhangsan' && password === '123')
+  const sql = `SELECT username, realname
+    FROM users
+    WHERE username = '${username}' AND password = '${password}';`
+
+  return exec(sql).then(rows => (rows as object[])[0])
 }
