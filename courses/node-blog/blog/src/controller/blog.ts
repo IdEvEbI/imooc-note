@@ -67,19 +67,23 @@ export const newBlog = (data: BlogData = {}) => {
  * @param data 博客数据
  * @returns 是否更新成功
  */
-export const updateBlog = (id: number, data = {}) => {
-  console.log('Update Blog =>', data)
+export const updateBlog = (id: number, data: BlogData = {}) => {
+  const { title, content } = data
 
-  return true
+  const sql = `UPDATE blogs SET title = '${title}', content = '${content}'
+    WHERE id = ${id}; `
+
+  return exec(sql).then(updateData => (updateData as OkPacket).affectedRows > 0)
 }
 
 /**
  * 删除指定 id 的博客
  * @param id 博客 id
+ * @param author 作者
  * @returns 是否删除成功
  */
-export const deleteBlog = (id: number) => {
-  console.log(`DELETE ${id} 的博客`)
+export const deleteBlog = (id: number, author: string) => {
+  const sql = `DELETE FROM blogs WHERE id = ${id} AND author = '${author}'; `
 
-  return true
+  return exec(sql).then(updateData => (updateData as OkPacket).affectedRows > 0)
 }

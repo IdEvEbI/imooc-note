@@ -45,7 +45,7 @@ const handleBlogRouter = async (
     const id = parseInt(params.get('id') || '1')
     const data = await postData(req)
 
-    return updateBlog(id, data)
+    return await updateBlog(id, data)
       ? successResult(undefined, 'update success')
       : failResult(undefined, 'update failed')
   }
@@ -54,7 +54,8 @@ const handleBlogRouter = async (
   if (method === 'POST' && path === '/api/blog/del') {
     const id = parseInt(params.get('id') || '1')
 
-    return deleteBlog(id)
+    // TODO: 作者参数使用的是假数据
+    return await deleteBlog(id, 'zhangsan')
       ? successResult(undefined, 'delete success')
       : failResult(undefined, 'delete failed')
   }
