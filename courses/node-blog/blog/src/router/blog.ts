@@ -9,14 +9,12 @@ import {
   deleteBlog
 } from '../controller/blog'
 import { postData } from '../utils/postData'
+import { reqQuery } from '../utils/requestData'
 
 const handleBlogRouter = async (
   req: http.IncomingMessage,
   res: http.ServerResponse) => {
-  const method = req.method
-  const url = req.url
-  const path = url?.split('?')[0]
-  const params = new URLSearchParams(url?.split('?')[1])
+  const { method, path, params } = reqQuery(req)
 
   // 获取博客列表
   if (method === 'GET' && path === '/api/blog/list') {
