@@ -114,3 +114,38 @@ Cookie 是实现用户登录的必要条件。
      }
    }
    ```
+
+### 1.4 服务端限制客户端
+
+#### 仅允许服务端修改 Cookie
+
+在已经完成的代码中，客户端可以通过 `document.cookie = 'username=lisi;'` 伪造登录 Cookie，这样存在安全隐患。修改 `res.setHeader` 增加 `httpOnly` 设置，限制只允许通过后端来修改 Cookie，代码如下：
+
+```ts
+res.setHeader('Set-Cookie', `username=${username}; path=/; httpOnly`)
+```
+
+> 提示：后端增加了 `httpOnly` 设置后，客户端再向服务器发送 Cookie 时，后端设置的 Cookie 会在后面，从而在解析时会覆盖掉用户在浏览器设置的 Cookie。
+
+#### 设置 Cookie 过期时间
+
+1. 在 `/src/router/user.ts` 中增加 `cookieExpires` 函数用于获取 Cookie 的过期时间，代码如下：
+
+   ```ts
+   /**
+    * Cookie 过期时间
+    */
+   const cookieExpires = () => {
+     const d = new Date()
+
+     d.setTime(d.getTime() + 24 * 60 * 60 * 1000)
+
+     return d.toUTCString()
+   }
+   ```
+
+2. 修改 `res.setHeader` 增加 `expires` 设置，限制 Cookie 的**过期时间为一天**，代码如下：
+
+   ```ts
+   res.setHeader('Set-Cookie', `username=${username}; path=/; httpOnly; expires=${cookieExpires()}`)
+   ```

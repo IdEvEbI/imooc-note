@@ -39,6 +39,9 @@ export const reqCookie = (req: http.IncomingMessage) => {
     }
 
     const [key, val] = item.trim().split('=')
+
+    console.log(key, val)
+
     cookie[key] = val
   })
 
