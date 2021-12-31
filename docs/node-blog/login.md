@@ -149,3 +149,16 @@ res.setHeader('Set-Cookie', `username=${username}; path=/; httpOnly`)
    ```ts
    res.setHeader('Set-Cookie', `username=${username}; path=/; httpOnly; expires=${cookieExpires()}`)
    ```
+
+## 2. session
+
+### 2.1 session 的作用
+
+`session` 是一个用服务端存储用户信息的登录解决方案。在已经完成的代码中，是单纯通过 Cookie 来传递用户信息的，这样做**会暴露用户信息不够安全**。而 session 就是解决这一问题的解决方案，通过 session 可以：
+
+1. 在客户端只存储一个 `sessionId`；
+2. 在服务端存储用户的完整信息（`session`) 。
+
+从而既能保证用户信息的安全，又能解决 Cookie 有存储空间限制的问题。
+
+### 2.2 用 session 改造用户登录验证

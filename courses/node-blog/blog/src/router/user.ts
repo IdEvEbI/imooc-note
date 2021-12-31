@@ -2,7 +2,8 @@ import * as http from 'http'
 import { userLogin } from '../controller/user'
 import { successResult, failResult } from '../model/resResult'
 // import { postData } from '../utils/postData'
-import { reqCookie, reqQuery } from '../utils/requestData'
+import { reqQuery } from '../utils/requestData'
+import { reqCookie } from '../utils/cookie'
 
 /**
  * Cookie 过期时间
