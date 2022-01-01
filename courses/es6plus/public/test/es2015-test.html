@@ -10,6 +10,13 @@
 
 <body>
   <h1>测试页面</h1>
+  <script>
+    // 在 html 中使用 var 定义全局的变量，变量会被挂载到 window 全局对象上，开发中强烈不推荐
+    var a = 10
+
+    console.log(a)
+    console.log(window.a)
+  </script>
 </body>
 
 </html>
