@@ -30,3 +30,4 @@ ES 每个版本的新特性，可以查阅：<https://github.com/tc39/proposals/
 ## 课程笔记
 
 1. [构建开发环境](./webpack.md)
+2. [ES 2015](./es2015.md)
