@@ -45,6 +45,8 @@
    </html>
    ```
 
+6. 新建测试文件 `/public/test/es2015-test.html`。
+
 ## 2. webpack 构建工具
 
 1. 安装 `webpack`、`webpack-cli`、`webpack-dev-server`
@@ -58,7 +60,7 @@
 1. 安装 `html-webpack-plugin` 和 `babel`：
 
    ```bash
-   yarn add -D html-webpack-plugin
+   yarn add -D html-webpack-plugin copy-webpack-plugin
 
    yarn add -D babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime
    ```
@@ -67,6 +69,7 @@
 
    ```js
    const HtmlWebpackPlugin = require('html-webpack-plugin')
+   const CopyWebpackPlugin = require('copy-webpack-plugin')
 
    module.exports = {
      entry: './src/index.js',
@@ -94,9 +97,16 @@
        new HtmlWebpackPlugin({
          template: './src/tpl/index.html'
        }),
+       new CopyWebpackPlugin({
+         patterns: [
+           { from: "public", to: "" },
+         ],
+       })
      ],
    }
    ```
+
+   - 每次成功构建都会把 `public` 目录下的文件及目录复制到 `dist` 目录下。
 
 ### 2.2 开发环境和生产环境配置
 
@@ -114,7 +124,7 @@
    yarn add -D clean-webpack-plugin
    ```
 
-   - 每次成功构建前，清空 dist 目录，避免多次构建生成无用的带哈希的文件。
+   - 每次成功构建前，会清空 dist 目录，避免多次构建生成无用的带哈希的文件。
 
 3. 新建 `./build/webpack.pro.config.js` **生产环境配置**：
 
